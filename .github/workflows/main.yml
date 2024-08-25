@@ -21,7 +21,7 @@ jobs:
     - name: Build Go binary
       run: |
         cd backend
-        GOOS=linux GOARCH=amd64 go build -o server
+        GOOS=linux GOARCH=amd64 go build -ldflags '-extldflags "-static"' -o server
 
     - name: Deploy to Alpine Linode
       env:
