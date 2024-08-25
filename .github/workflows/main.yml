@@ -15,6 +15,8 @@ jobs:
 
     - name: Set up Go
       uses: actions/setup-go@v5.0.2
+      with:
+        go-version: '1.20'  # Adjust the Go version as needed
 
     - name: Build Go binary
       run: |
@@ -28,4 +30,11 @@ jobs:
         echo "$SSH_PRIVATE_KEY" > private_key
         chmod 600 private_key
         scp -i private_key -o StrictHostKeyChecking=no ./backend/server root@194.195.253.151:~/test
+                ssh -i private_key -o StrictHostKeyChecking=no root@194.195.253.151 << 'EOF'
+          chmod +x ~/test/server
+          # Optionally, list files to verify
+          ls -l ~/test/server
+          # Attempt to run the server
+          ~/test/server
+        EOF
         rm private_key
