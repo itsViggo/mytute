@@ -29,9 +29,10 @@ jobs:
       run: |
         echo "$SSH_PRIVATE_KEY" > private_key
         chmod 600 private_key
-        scp -i private_key -o StrictHostKeyChecking=no ./backend/server root@194.195.253.151:/usr/local/bin
+        scp -i private_key -o StrictHostKeyChecking=no ./backend/server root@194.195.253.151:/tmp
         ssh -i private_key -o StrictHostKeyChecking=no root@194.195.253.151 << 'EOF'
           systemctl stop backend
+          mv /tmp/server /usr/local/bin
           systemctl start backend
         EOF
         rm private_key
