@@ -21,7 +21,7 @@ jobs:
     - name: Build Go binary
       run: |
         cd backend
-        GOOS=linux GOARCH=amd64 go build -ldflags '-extldflags "-static"' -o server
+        go build -o server
 
     - name: Deploy to Alpine Linode
       env:
@@ -30,11 +30,8 @@ jobs:
         echo "$SSH_PRIVATE_KEY" > private_key
         chmod 600 private_key
         scp -i private_key -o StrictHostKeyChecking=no ./backend/server root@194.195.253.151:/usr/local/bin
-                ssh -i private_key -o StrictHostKeyChecking=no root@194.195.253.151 << 'EOF'
-          chmod +x ~/test/server
-          # Optionally, list files to verify
-          ls -l ~/test/server
-          # Attempt to run the server
-          ~/test/server
+        ssh -i private_key -o StrictHostKeyChecking=no root@194.195.253.151 << 'EOF'
+          systemctl stop backend
+          systemctl start backend
         EOF
         rm private_key
