@@ -27,5 +27,5 @@ jobs:
       run: |
         echo "$SSH_PRIVATE_KEY" > private_key
         chmod 600 private_key
-        scp -i private_key server root@194.195.253.151:~/test StrictHostKeyChecking=no
+        scp -i private_key server root@194.195.253.151:~/test -o StrictHostKeyChecking=no
         rm private_key
